@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TCM Cinematic — Living Portrait</title>
+  <meta name="description" content="Website cinematic interaktif dengan Three.js — potret yang hidup, bergerak mengikuti kursor." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Letterbox cinematic bars -->
+  <div class="letterbox letterbox--top"></div>
+  <div class="letterbox letterbox--bottom"></div>
+
+  <!-- Loading overlay -->
+  <div id="loader" class="loader">
+    <div class="loader__text">MEMUAT ADEGAN</div>
+    <div class="loader__bar"><div class="loader__fill"></div></div>
+  </div>
+
+  <!-- Fixed WebGL canvas: seluruh scene dirender di sini -->
+  <canvas id="scene"></canvas>
+
+  <!-- Film grain overlay -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="nav">
+    <div class="nav__logo">TCM<span>.CINEMA</span></div>
+    <nav class="nav__links">
+      <a href="#hero">Beranda</a>
+      <a href="#story">Cerita</a>
+      <a href="#gallery">Galeri</a>
+      <a href="#contact">Kontak</a>
+    </nav>
+  </header>
+
+  <main id="content">
+    <!-- ACT I: Hero — living portrait -->
+    <section id="hero" class="section section--hero" data-act="1">
+      <div class="hero__copy">
+        <p class="eyebrow reveal">ADEGAN 01 — POTRET YANG HIDUP</p>
+        <h1 class="hero__title reveal">Gambar yang<br /><em>Bernapas</em></h1>
+        <p class="hero__sub reveal">
+          Gerakkan kursor — perhatikan kepala dan tubuhnya mengikuti arahmu.
+          Foto dua dimensi, kedalaman tiga dimensi.
+        </p>
+        <div class="hero__hint reveal"><span class="hint-dot"></span> Gerakkan mouse / sentuh layar</div>
+      </div>
+    </section>
+
+    <!-- ACT II: Story -->
+    <section id="story" class="section section--story" data-act="2">
+      <div class="story__block">
+        <p class="eyebrow reveal">ADEGAN 02 — DI BALIK KEDALAMAN</p>
+        <h2 class="reveal">Setiap piksel punya <em>jarak</em></h2>
+        <p class="reveal">
+          Teknik depth-map memetakan kedalaman setiap bagian gambar — hidung lebih dekat
+          dari telinga, bahu lebih dekat dari latar. Saat kamera bergeser, dunia di dalam
+          foto ikut berputar.
+        </p>
+      </div>
+      <div class="story__block story__block--right">
+        <p class="eyebrow reveal">TEKNOLOGI</p>
+        <h2 class="reveal">Shader, bukan <em>video</em></h2>
+        <p class="reveal">
+          Semua gerakan dihitung real-time oleh GPU melalui custom shader Three.js.
+          Ringan, responsif, dan bereaksi pada setiap sentuhan — hal yang tidak bisa
+          dilakukan video biasa.
+        </p>
+      </div>
+    </section>
+
+    <!-- ACT III: Gallery slots -->
+    <section id="gallery" class="section section--gallery" data-act="3">
+      <p class="eyebrow reveal">ADEGAN 03 — GALERI</p>
+      <h2 class="reveal">Karakter <em>Lainnya</em></h2>
+      <div class="gallery__grid">
+        <figure class="gallery__item reveal" data-portrait="assets/gallery-1.jpg" data-depth="assets/gallery-1-depth.jpg">
+          <div class="gallery__canvas-slot"></div>
+          <figcaption>Potret 01 — letakkan <code>assets/gallery-1.jpg</code></figcaption>
+        </figure>
+        <figure class="gallery__item reveal" data-portrait="assets/gallery-2.jpg" data-depth="assets/gallery-2-depth.jpg">
+          <div class="gallery__canvas-slot"></div>
+          <figcaption>Potret 02 — letakkan <code>assets/gallery-2.jpg</code></figcaption>
+        </figure>
+        <figure class="gallery__item reveal" data-portrait="assets/gallery-3.jpg" data-depth="assets/gallery-3-depth.jpg">
+          <div class="gallery__canvas-slot"></div>
+          <figcaption>Potret 03 — letakkan <code>assets/gallery-3.jpg</code></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ACT IV: Contact / CTA -->
+    <section id="contact" class="section section--contact" data-act="4">
+      <p class="eyebrow reveal">ADEGAN AKHIR</p>
+      <h2 class="reveal">Buat duniamu <em>bergerak</em></h2>
+      <p class="reveal">Trimitra Cipta Mandiri — pengalaman web sinematik dan interaktif.</p>
+      <a class="btn reveal" href="mailto:tcm@trimitraciptamandiri.com">Mulai Proyek</a>
+    </section>
+  </main>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.min.js"
+      }
+    }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
