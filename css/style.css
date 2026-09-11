@@ -1,0 +1,244 @@
+:root {
+  --bg: #07070a;
+  --ink: #e9e4da;
+  --ink-dim: #9a938a;
+  --accent: #c9a05a;
+  --serif: "Cormorant Garamond", Georgia, serif;
+  --sans: "Inter", system-ui, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ---- Fixed WebGL canvas behind everything ---- */
+#scene {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: block;
+}
+
+/* ---- Cinematic letterbox bars ---- */
+.letterbox {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 0;
+  background: #000;
+  z-index: 40;
+  transition: height 1.4s cubic-bezier(0.77, 0, 0.18, 1);
+  pointer-events: none;
+}
+.letterbox--top { top: 0; }
+.letterbox--bottom { bottom: 0; }
+body.is-ready .letterbox { height: clamp(24px, 4vh, 48px); }
+
+/* ---- Film grain ---- */
+.grain {
+  position: fixed;
+  inset: -100%;
+  z-index: 30;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-shift 0.9s steps(4) infinite;
+}
+@keyframes grain-shift {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-2%, 3%); }
+  50% { transform: translate(3%, -2%); }
+  75% { transform: translate(-3%, -3%); }
+  100% { transform: translate(2%, 2%); }
+}
+
+/* ---- Loader ---- */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  transition: opacity 0.9s ease, visibility 0.9s;
+}
+.loader.is-done { opacity: 0; visibility: hidden; }
+.loader__text {
+  font-size: 11px;
+  letter-spacing: 0.5em;
+  color: var(--ink-dim);
+}
+.loader__bar {
+  width: 180px;
+  height: 1px;
+  background: #232323;
+  overflow: hidden;
+}
+.loader__fill {
+  width: 40%;
+  height: 100%;
+  background: var(--accent);
+  animation: load-sweep 1.2s ease-in-out infinite;
+}
+@keyframes load-sweep {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(450%); }
+}
+
+/* ---- Nav ---- */
+.nav {
+  position: fixed;
+  top: clamp(24px, 4vh, 48px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px clamp(20px, 5vw, 64px);
+  mix-blend-mode: difference;
+}
+.nav__logo {
+  font-family: var(--serif);
+  font-size: 20px;
+  letter-spacing: 0.08em;
+}
+.nav__logo span { color: var(--accent); font-size: 12px; letter-spacing: 0.3em; }
+.nav__links { display: flex; gap: clamp(14px, 3vw, 36px); flex-wrap: wrap; }
+.nav__links a {
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+.nav__links a:hover { opacity: 1; }
+
+/* ---- Sections ---- */
+#content { position: relative; z-index: 10; }
+
+.section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 18vh clamp(20px, 6vw, 96px);
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.45em;
+  color: var(--accent);
+  margin-bottom: 22px;
+}
+
+h1, h2 {
+  font-family: var(--serif);
+  font-weight: 400;
+  line-height: 1.05;
+}
+h1 em, h2 em { font-style: italic; color: var(--accent); }
+
+/* Hero */
+.section--hero { justify-content: flex-end; padding-bottom: 16vh; }
+.hero__copy { max-width: 620px; }
+.hero__title { font-size: clamp(52px, 9vw, 128px); margin-bottom: 26px; }
+.hero__sub { font-size: clamp(15px, 1.6vw, 19px); color: var(--ink-dim); max-width: 460px; line-height: 1.8; }
+.hero__hint {
+  margin-top: 38px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.hint-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.9); opacity: 0.3; }
+}
+
+/* Story */
+.section--story { gap: 26vh; }
+.story__block { max-width: 520px; }
+.story__block--right { align-self: flex-end; text-align: right; }
+.story__block h2 { font-size: clamp(36px, 5vw, 68px); margin-bottom: 20px; }
+.story__block p:not(.eyebrow) { color: var(--ink-dim); line-height: 1.9; font-size: 16px; }
+
+/* Gallery */
+.section--gallery h2 { font-size: clamp(36px, 5vw, 68px); margin-bottom: 8vh; }
+.gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: clamp(18px, 3vw, 40px);
+}
+.gallery__item { position: relative; }
+.gallery__canvas-slot {
+  aspect-ratio: 3 / 4;
+  max-width: 100%;
+  background: #0d0d12;
+  border: 1px solid #1d1d24;
+  overflow: hidden;
+  position: relative;
+}
+.gallery__canvas-slot canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.gallery__item figcaption {
+  margin-top: 14px;
+  font-size: 12px;
+  color: var(--ink-dim);
+  letter-spacing: 0.05em;
+}
+.gallery__item code { color: var(--accent); font-size: 11px; }
+
+/* Contact */
+.section--contact { align-items: center; text-align: center; min-height: 90vh; }
+.section--contact h2 { font-size: clamp(40px, 6vw, 84px); margin-bottom: 20px; }
+.section--contact p:not(.eyebrow) { color: var(--ink-dim); margin-bottom: 42px; }
+.btn {
+  display: inline-block;
+  padding: 16px 44px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  transition: background 0.4s, color 0.4s;
+}
+.btn:hover { background: var(--accent); color: #0a0a0a; }
+
+/* Reveal (digerakkan GSAP; state awal di sini agar tanpa JS tetap terlihat) */
+.reveal { will-change: transform, opacity; }
+
+@media (max-width: 640px) {
+  .nav__links { display: none; }
+  .story__block--right { align-self: flex-start; text-align: left; }
+}
